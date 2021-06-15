@@ -1,0 +1,10 @@
+Metadata-Version: 2.1
+Briefcase-Version: 0.3.3
+Name: countdown
+Formal-Name: Countdown
+App-ID: com.communitycomputing.countdown
+Version: 0.0.1
+Home-page: https://stupid.frickin.website/countdown
+Author: Hans Kelson
+Author-email: hans@communitycomputing.net
+Summary: A Simple Countdown Timer

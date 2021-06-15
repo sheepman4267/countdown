@@ -6,9 +6,17 @@ import subprocess
 import pyglet
 import os
 
+import anvil.server
+
+anvil.server.connect()
+
+
+
 def main():
     # This should start and launch your app!
     print(os.system('pwd'))
+    pyglet.clock.schedule_interval(timer.update, 1)
+    pyglet.app.run()
 
 
 
@@ -171,6 +179,7 @@ class Timer(object):
     def displayCurrent(self, dt):
         self.label.text = self.current
 
+
 @window.event
 def on_key_press(symbol, modifiers):
     #dismiss splash screen and inhibit other buttons if splash is up, to avoid breakage
@@ -182,8 +191,10 @@ def on_key_press(symbol, modifiers):
     elif symbol == pyglet.window.key.SPACE:
         if timer.running:
             timer.running = False
+            anvil.server.call('dispatch_events', session='hah!', event='stop')
         else:
             timer.running = True
+            anvil.server.call('dispatch_events', session='hah!', event='start')
 
     elif symbol == pyglet.window.key.K:
         timer.show_keybinds()
@@ -286,7 +297,12 @@ def on_draw():
     window.clear()
     timer.label.draw()
 
+@anvil.server.callable()
+def handle_client_events(session, event):
+    if event == "start":
+        timer.running = True
+    if event == "stop":
+        timer.running = False
 
 timer = Timer()
-pyglet.clock.schedule_interval(timer.update, 1)
-pyglet.app.run()
+
